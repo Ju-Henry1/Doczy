@@ -4,7 +4,7 @@
       <!-- 🧭 Header -->
       <header class="bg-white shadow-md">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 class="text-2xl font-bold text-blue-700">🧾 FacturePro</h1>
+          <h1 class="text-2xl font-bold text-blue-700">🧾 Doczy</h1>
           <nav class="space-x-4">
             <NuxtLink to="/facture" class="text-sm text-gray-700 hover:text-blue-600">Factures</NuxtLink>
             <NuxtLink to="/devis" class="text-sm text-gray-700 hover:text-blue-600">Devis</NuxtLink>
@@ -35,7 +35,7 @@
       <!-- 📄 Footer -->
       <footer class="bg-white border-t mt-12">
         <div class="max-w-6xl mx-auto px-4 py-6 text-center text-sm text-gray-400">
-          &copy; {{ new Date().getFullYear() }} FacturePro. Fait avec 💙 en Nuxt 3.
+          &copy; {{ new Date().getFullYear() }} Doczy. Fait avec 💙 en Nuxt 3.
         </div>
       </footer>
   
