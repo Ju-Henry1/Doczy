@@ -1,48 +1,59 @@
 <template>
-    <div class="min-h-screen flex flex-col bg-gray-50">
-  
-      <!-- 🧭 Header -->
-      <header class="bg-white shadow-md">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 class="text-2xl font-bold text-blue-700">🧾 Doczy</h1>
-          <nav class="space-x-4">
-            <NuxtLink to="/facture" class="text-sm text-gray-700 hover:text-blue-600">Factures</NuxtLink>
-            <NuxtLink to="/devis" class="text-sm text-gray-700 hover:text-blue-600">Devis</NuxtLink>
-          </nav>
-        </div>
-      </header>
-  
-      <!-- 🚀 Hero -->
-      <main class="flex-1 flex items-center justify-center text-center px-4">
-        <div class="max-w-2xl">
-          <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Générez vos factures & devis <span class="text-blue-600">en quelques clics</span>
-          </h2>
-          <p class="text-gray-600 text-lg mb-8">
-            Une solution simple, rapide et gratuite pour créer vos documents professionnels en ligne.
-          </p>
-          <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <NuxtLink to="/facture" class="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition">
-              ➕ Créer une facture
-            </NuxtLink>
-            <NuxtLink to="/devis" class="bg-gray-200 text-gray-800 px-6 py-3 rounded-md hover:bg-gray-300 transition">
-              📝 Créer un devis
-            </NuxtLink>
+  <div class="bg-gray-50 min-h-screen">
+    <!-- Hero section -->
+    <section class="bg-white py-24 px-6 text-center border-b">
+      <div class="max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">
+          📄 Doczy – Générez vos documents pro en quelques clics
+        </h1>
+        <p class="text-gray-600 text-lg mb-8">
+          Créez facilement des factures, devis, fiches de paie, contrats et plus encore, gratuitement et sans inscription.
+        </p>
+        <NuxtLink to="/outils" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700 transition">
+          🚀 Commencer maintenant
+        </NuxtLink>
+      </div>
+    </section>
+
+    <!-- Fonctionnalités clés -->
+    <section class="py-20 px-6">
+      <div class="max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">🛠️ Nos fonctionnalités</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+            <h3 class="text-lg font-semibold text-blue-700 mb-2">🧾 Factures & Devis</h3>
+            <p class="text-sm text-gray-600">Créez des documents professionnels pour vos clients, à envoyer en PDF en quelques secondes.</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+            <h3 class="text-lg font-semibold text-blue-700 mb-2">📑 Fiches de paie</h3>
+            <p class="text-sm text-gray-600">Remplissez les infos salarié/employeur et générez une fiche de paie lisible et conforme.</p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
+            <h3 class="text-lg font-semibold text-blue-700 mb-2">📃 Contrats & Reçus</h3>
+            <p class="text-sm text-gray-600">Contrats de prestation, attestations, reçus de paiement... tout est centralisé.</p>
           </div>
         </div>
-      </main>
-  
-      <!-- 📄 Footer -->
-      <footer class="bg-white border-t mt-12">
-        <div class="max-w-6xl mx-auto px-4 py-6 text-center text-sm text-gray-400">
-          &copy; {{ new Date().getFullYear() }} Doczy. Fait avec 💙 en Nuxt 3.
-        </div>
-      </footer>
-  
-    </div>
-  </template>
-  
-  <script setup>
-  // rien à déclarer pour le moment
-  </script>
-  
+      </div>
+    </section>
+
+    <!-- Appel à l'action -->
+    <section class="bg-blue-50 py-16 px-6">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">Générez des documents sans stress, gratuitement.</h2>
+        <p class="text-gray-600 mb-6">Aucun compte requis. Vos données restent sur votre appareil.</p>
+        <NuxtLink to="/outils" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700">
+          ➕ Créer mon premier document
+        </NuxtLink>
+      </div>
+    </section>
+  </div>
+</template>
+
+<script setup>
+// Aucun script nécessaire ici
+</script>
+
+<style scoped>
+/* Tu peux ajouter du style personnalisé ici si besoin */
+</style>
