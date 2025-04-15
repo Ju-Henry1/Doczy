@@ -13,5 +13,6 @@ module.exports = {
     experimental: {
       disableColorPaletteModern: true, // 🛑 évite les couleurs OKLCH
     },
+    darkMode: 'class',
   }
   
