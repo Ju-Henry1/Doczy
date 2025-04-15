@@ -26,17 +26,6 @@
           </NuxtLink>
         </div>
 
-        <!-- Carte : Fiche de paie -->
-        <div class="bg-white rounded-2xl shadow border p-6 flex flex-col justify-between hover:shadow-md transition">
-          <div>
-            <h2 class="text-xl font-semibold text-blue-700 mb-2">📑 Générer une fiche de paie</h2>
-            <p class="text-gray-600 text-sm">Produisez une fiche de paie claire à partir des informations employé/employeur.</p>
-          </div>
-          <NuxtLink to="/fiche-de-paie" class="mt-4 inline-block text-blue-600 hover:underline text-sm font-medium">
-            ➡️ Accéder à l'outil
-          </NuxtLink>
-        </div>
-
         <!-- Carte : Reçu de paiement -->
         <div class="bg-white rounded-2xl shadow border p-6 flex flex-col justify-between hover:shadow-md transition">
           <div>
