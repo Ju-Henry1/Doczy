@@ -7,6 +7,6 @@ export default defineNuxtConfig({
   tailwindcss: {
     configPath: 'tailwind.config.js',
   },
-
+  
   compatibilityDate: '2025-04-12',
 })
