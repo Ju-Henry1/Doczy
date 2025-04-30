@@ -1,48 +1,48 @@
 <template>
-  <div class="bg-gray-50 min-h-screen">
+  <div class="container">
     <!-- Hero section -->
-    <section class="bg-white py-24 px-6 text-center border-b">
-      <div class="max-w-4xl mx-auto">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">
           📄 Doczy – Générez vos documents pro en quelques clics
         </h1>
-        <p class="text-gray-600 text-lg mb-8">
+        <p class="hero-description">
           Créez facilement des factures, devis, fiches de paie, contrats et plus encore, gratuitement et sans inscription.
         </p>
-        <NuxtLink to="/outils" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700 transition">
+        <NuxtLink to="/outils" class="cta-button">
           🚀 Commencer maintenant
         </NuxtLink>
       </div>
     </section>
 
     <!-- Fonctionnalités clés -->
-    <section class="py-20 px-6">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">🛠️ Nos fonctionnalités</h2>
+    <section class="features">
+      <div class="features-container">
+        <h2 class="features-title">🛠️ Nos fonctionnalités</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
-            <h3 class="text-lg font-semibold text-blue-700 mb-2">🧾 Factures & Devis</h3>
-            <p class="text-sm text-gray-600">Créez des documents professionnels pour vos clients, à envoyer en PDF en quelques secondes.</p>
+        <div class="feature-cards">
+          <div class="feature-card">
+            <h3 class="feature-title">🧾 Factures & Devis</h3>
+            <p class="feature-description">Créez des documents professionnels pour vos clients, à envoyer en PDF en quelques secondes.</p>
           </div>
-          <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
-            <h3 class="text-lg font-semibold text-blue-700 mb-2">📑 Fiches de paie</h3>
-            <p class="text-sm text-gray-600">Remplissez les infos salarié/employeur et générez une fiche de paie lisible et conforme.</p>
+          <div class="feature-card">
+            <h3 class="feature-title">📑 Fiches de paie</h3>
+            <p class="feature-description">Remplissez les infos salarié/employeur et générez une fiche de paie lisible et conforme.</p>
           </div>
-          <div class="bg-white p-6 rounded-xl shadow hover:shadow-md transition">
-            <h3 class="text-lg font-semibold text-blue-700 mb-2">📃 Contrats & Reçus</h3>
-            <p class="text-sm text-gray-600">Contrats de prestation, attestations, reçus de paiement... tout est centralisé.</p>
+          <div class="feature-card">
+            <h3 class="feature-title">📃 Contrats & Reçus</h3>
+            <p class="feature-description">Contrats de prestation, attestations, reçus de paiement... tout est centralisé.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Appel à l'action -->
-    <section class="bg-blue-50 py-16 px-6">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-2xl font-bold text-gray-800 mb-4">Générez des documents sans stress, gratuitement.</h2>
-        <p class="text-gray-600 mb-6">Aucun compte requis. Vos données restent sur votre appareil.</p>
-        <NuxtLink to="/outils" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-xl shadow hover:bg-blue-700">
+    <section class="cta">
+      <div class="cta-content">
+        <h2 class="cta-title">Générez des documents sans stress, gratuitement.</h2>
+        <p class="cta-description">Aucun compte requis. Vos données restent sur votre appareil.</p>
+        <NuxtLink to="/outils" class="cta-button">
           ➕ Créer mon premier document
         </NuxtLink>
       </div>
@@ -55,5 +55,137 @@
 </script>
 
 <style scoped>
-/* Tu peux ajouter du style personnalisé ici si besoin */
+/* Importation de la font Roboto depuis Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+/* Global container */
+.container {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Hero Section */
+.hero {
+  background-color: white;
+  padding: 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #1a202c;
+  margin-bottom: 16px;
+}
+
+.hero-description {
+  color: #4a5568;
+  font-size: 1.25rem;
+  margin-bottom: 24px;
+}
+
+.cta-button {
+  display: inline-block;
+  background-color: #3182ce;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+  background-color: #2b6cb0;
+}
+
+/* Features Section */
+.features {
+  padding: 40px 16px;
+}
+
+.features-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.features-title {
+  font-size: 2.25rem;
+  font-weight: bold;
+  text-align: center;
+  color: #2d3748;
+  margin-bottom: 48px;
+}
+
+.feature-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+.feature-card {
+  background-color: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.feature-title {
+  font-size: 1.25rem;
+  color: #3182ce;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.feature-description {
+  font-size: 1rem;
+  color: #4a5568;
+}
+
+/* CTA Section */
+.cta {
+  background-color: #ebf8ff;
+  padding: 64px 16px;
+}
+
+.cta-content {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cta-title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #1a202c;
+  margin-bottom: 16px;
+}
+
+.cta-description {
+  color: #4a5568;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .feature-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .feature-cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 </style>

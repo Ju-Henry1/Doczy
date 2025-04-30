@@ -1,12 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['@nuxtjs/tailwindcss'],
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.css'], // Assure-toi que ton fichier CSS est bien chargé
 
-  // 👉 On ignore l'erreur TS ici, c’est normal
-  // @ts-ignore
-  tailwindcss: {
-    configPath: 'tailwind.config.js',
-  },
-  
   compatibilityDate: '2025-04-12',
 })

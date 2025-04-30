@@ -1,185 +1,209 @@
 <template>
-  <div class="bg-gray-100 min-h-screen p-6 space-y-12">
+  <div class="container">
     <!-- Aperçu PDF -->
-    <div
-      ref="pdfContent"
-      class="bg-white text-sm leading-relaxed space-y-6"
-      style="width: 210mm; min-height: 297mm; padding: 20mm; margin: auto;"
-    >
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
-        <!-- Vendeur -->
-        <div class="w-full md:w-1/3">
-          <h2 class="uppercase text-xs font-semibold text-gray-500 tracking-wide mb-2">Vendeur</h2>
-          <p class="text-gray-800 leading-relaxed text-sm">
-            <strong>{{ invoice.vendorName }}</strong><br />
-            {{ invoice.vendorAddress }}<br />
-            {{ invoice.vendorSiret }}<br />
-            {{ invoice.vendorEmail }}<br />
-            {{ invoice.vendorPhone }}
-          </p>
+    <div ref="pdfContent" class="pdf-content">
+      <!-- En-tête -->
+      <div class="header">
+        <!-- Émetteur -->
+        <div class="block">
+          <h2 class="section-title">Émetteur</h2>
+          <div class="text-block">
+            <p class="font-bold">{{ invoice.vendorName }}</p>
+            <p class="whitespace-pre">{{ invoice.vendorAddress }}</p>
+            <p>{{ invoice.vendorSiret }}</p>
+            <p>{{ invoice.vendorEmail }}</p>
+            <p>{{ invoice.vendorPhone }}</p>
+          </div>
         </div>
 
-        <!-- Bloc Facture -->
-        <div class="w-full md:w-1/3 text-center bg-gray-50 border border-gray-200 rounded-md py-4">
-          <h1 class="text-xl font-bold text-gray-800 uppercase">Facture</h1>
-          <p class="text-sm text-gray-500 mt-1">N° {{ invoice.number }}</p>
-          <p class="text-sm text-gray-500">Date : {{ invoice.date }}</p>
+        <!-- Facture -->
+        <div class="facture-block">
+          <h1>Facture</h1>
+          <p class="small-text">N° {{ invoice.number }}</p>
+          <p class="small-text">Date : {{ invoice.date }}</p>
         </div>
 
         <!-- Client -->
-        <div class="w-full md:w-1/3 text-right">
-          <h2 class="uppercase text-xs font-semibold text-gray-500 tracking-wide mb-2">Client</h2>
-          <p class="text-gray-800 leading-relaxed text-sm">
-            <strong>{{ invoice.clientName }}</strong><br />
-            {{ invoice.clientAddress }}<br />
-            {{ invoice.clientEmail }}<br />
-            {{ invoice.clientPhone }}
-          </p>
+        <div class="block right-align">
+          <h2 class="section-title">Destinataire</h2>
+          <div class="text-block">
+            <p class="font-bold">{{ invoice.clientName }}</p>
+            <p class="whitespace-pre">{{ invoice.clientAddress }}</p>
+            <p>{{ invoice.clientEmail }}</p>
+            <p>{{ invoice.clientPhone }}</p>
+          </div>
         </div>
       </div>
 
       <!-- Détails facture -->
-      <div>
-        <h2 class="text-lg font-semibold text-gray-800 mb-2">Détails de la facture</h2>
-        <table class="w-full border text-sm">
-          <thead class="bg-gray-100">
+      <div class="details">
+        <h2 class="details-title">Détails de la facture</h2>
+        <table class="facture-table">
+          <thead>
             <tr>
-              <th class="p-2 border">Description</th>
-              <th class="p-2 border text-right">Qté</th>
-              <th class="p-2 border text-right">Prix unitaire</th>
-              <th class="p-2 border text-right">Total</th>
+              <th>Prestation</th>
+              <th>Qté</th>
+              <th>Prix unitaire</th>
+              <th>Total</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in invoice.items" :key="index">
-              <td class="p-2 border">{{ item.description }}</td>
-              <td class="p-2 border text-right">{{ item.qty }}</td>
-              <td class="p-2 border text-right">{{ format(item.price) }} €</td>
-              <td class="p-2 border text-right">{{ format(item.qty * item.price) }} €</td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.qty }}</td>
+              <td>{{ formatNumber(item.price) }} €</td>
+              <td>{{ formatNumber(item.qty * item.price) }} €</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="text-right text-lg font-semibold mt-4">
+      <br>
+
+      <div class="total">
         Total à payer : {{ total }} €
       </div>
 
-      <div class="text-xs text-gray-500 border-t pt-4 whitespace-pre-line">
+      <div class="text-block">
+        <p><strong>Mode de paiement :</strong> {{ invoice.paymentMethod }}</p>
+
+        <div v-if="invoice.paymentMethod === 'Virement bancaire'" class="bank-details-box">
+          <h3>Coordonnées bancaires</h3>
+          <ul class="bank-list">
+            <li><strong>IBAN :</strong> {{ getBankField('iban') }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-text">
         {{ invoice.footer }}
       </div>
     </div>
 
     <!-- Formulaire -->
-    <form class="max-w-4xl mx-auto bg-white p-12 shadow rounded-2xl space-y-16">
-      <!-- Vendeur -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">🏢 Informations vendeur</h2>
-        <div class="grid grid-cols-2 gap-6">
+    <form class="form">
+      <!-- Émetteur -->
+      <section class="section">
+        <h2>🏢 Émetteur (vous)</h2>
+        <div class="grid-2">
           <div>
-            <label class="text-xs text-gray-500">Nom de votre entreprise</label>
-            <input v-model="invoice.vendorName" class="p-4 border rounded-xl w-full" />
+            <label>Nom de l'entreprise émettrice</label>
+            <input v-model="invoice.vendorName" class="input" />
           </div>
           <div>
-            <label class="text-xs text-gray-500">Numéro de SIRET ou TVA</label>
-            <input v-model="invoice.vendorSiret" class="p-4 border rounded-xl w-full" />
+            <label>Numéro de SIRET ou TVA</label>
+            <input v-model="invoice.vendorSiret" class="input" />
           </div>
           <div>
-            <label class="text-xs text-gray-500">Email professionnel</label>
-            <input v-model="invoice.vendorEmail" class="p-4 border rounded-xl w-full" />
+            <label>Adresse email de contact</label>
+            <input v-model="invoice.vendorEmail" class="input" />
           </div>
           <div>
-            <label class="text-xs text-gray-500">Numéro de téléphone</label>
-            <input v-model="invoice.vendorPhone" class="p-4 border rounded-xl w-full" />
+            <label>Numéro de téléphone</label>
+            <input v-model="invoice.vendorPhone" class="input" />
           </div>
-          <div class="col-span-2">
-            <label class="text-xs text-gray-500">Adresse complète</label>
-            <textarea v-model="invoice.vendorAddress" rows="2" class="p-4 border rounded-xl w-full" />
+          <div class="full">
+            <label>Adresse postale complète</label>
+            <textarea v-model="invoice.vendorAddress" class="textarea" rows="2"></textarea>
           </div>
         </div>
       </section>
 
       <!-- Client -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">👤 Informations client</h2>
-        <div class="grid grid-cols-2 gap-6">
+      <section class="section">
+        <h2>👤 Destinataire (client)</h2>
+        <div class="grid-2">
           <div>
-            <label class="text-xs text-gray-500">Nom ou raison sociale du client</label>
-            <input v-model="invoice.clientName" class="p-4 border rounded-xl w-full" />
+            <label>Nom du client ou de l'entreprise</label>
+            <input v-model="invoice.clientName" class="input" />
           </div>
           <div>
-            <label class="text-xs text-gray-500">Adresse email du client</label>
-            <input v-model="invoice.clientEmail" class="p-4 border rounded-xl w-full" />
+            <label>Adresse email du client</label>
+            <input v-model="invoice.clientEmail" class="input" />
           </div>
           <div>
-            <label class="text-xs text-gray-500">Numéro de téléphone</label>
-            <input v-model="invoice.clientPhone" class="p-4 border rounded-xl w-full" />
+            <label>Numéro de téléphone du client</label>
+            <input v-model="invoice.clientPhone" class="input" />
           </div>
-          <div class="col-span-2">
-            <label class="text-xs text-gray-500">Adresse postale du client</label>
-            <textarea v-model="invoice.clientAddress" rows="2" class="p-4 border rounded-xl w-full" />
+          <div class="full">
+            <label>Adresse du client</label>
+            <textarea v-model="invoice.clientAddress" class="textarea" rows="2"></textarea>
           </div>
         </div>
       </section>
 
       <!-- Référence -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">📅 Détails de la facture</h2>
-        <div class="grid grid-cols-2 gap-6">
+      <section class="section">
+        <h2>🗓️ Référence de la facture</h2>
+        <div class="grid-2">
           <div>
-            <label class="text-xs text-gray-500">Numéro de facture</label>
-            <input v-model="invoice.number" class="p-4 border rounded-xl w-full" />
+            <label>Numéro de la facture</label>
+            <input v-model="invoice.number" class="input" />
           </div>
           <div>
-            <label class="text-xs text-gray-500">Date d'émission</label>
-            <input v-model="invoice.date" type="date" class="p-4 border rounded-xl w-full" />
+            <label>Date d'émission</label>
+            <input v-model="invoice.date" class="input" type="date" />
           </div>
         </div>
       </section>
 
-      <!-- Lignes -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">📦 Lignes de facturation</h2>
-        <div class="space-y-4">
-          <div v-for="(item, index) in invoice.items" :key="index" class="grid grid-cols-3 gap-4">
+      <!-- Prestations -->
+      <section class="section">
+        <h2>📦 Prestations</h2>
+        <div class="space-y">
+          <div v-for="(item, index) in invoice.items" :key="index" class="grid-3">
             <div>
-              <label class="text-xs text-gray-500">Description de la prestation</label>
-              <input v-model="item.description" class="p-4 border rounded-xl w-full" />
+              <label>Description</label>
+              <input v-model="item.description" class="input" />
             </div>
             <div>
-              <label class="text-xs text-gray-500">Quantité</label>
-              <input v-model.number="item.qty" type="number" class="p-4 border rounded-xl w-full" />
+              <label>Quantité</label>
+              <input v-model.number="item.qty" class="input" type="number" />
             </div>
             <div>
-              <label class="text-xs text-gray-500">Prix unitaire (€)</label>
-              <input v-model.number="item.price" type="number" class="p-4 border rounded-xl w-full" />
+              <label>Prix unitaire (€)</label>
+              <input v-model.number="item.price" class="input" type="number" />
             </div>
           </div>
-          <button @click.prevent="addItem" class="text-blue-600 hover:underline text-sm">+ Ajouter une ligne</button>
+          <br>
+          <button @click.prevent="addItem" class="link-button">
+            + Ajouter une ligne
+          </button>
         </div>
       </section>
 
-      <!-- Mentions -->
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">📝 Mentions complémentaires</h2>
-        <label class="text-xs text-gray-500">Conditions de paiement, mentions légales, IBAN...</label>
-        <textarea v-model="invoice.footer" rows="4" class="p-4 border rounded-xl w-full" />
+      <!-- Mode de paiement -->
+      <section class="section">
+        <h2>💳 Mode de paiement</h2>
+        <select v-model="invoice.paymentMethod" class="input">
+          <option>Espèces</option>
+          <option>Virement bancaire</option>
+          <option>Chèque</option>
+          <option>Carte bancaire</option>
+          <option>Autre</option>
+        </select>
       </section>
 
-      <!-- Boutons -->
-      <div class="flex justify-end gap-6 pt-8 border-t mt-6">
-        <button
-          type="button"
-          @click="generatePDF('preview')"
-          class="bg-gray-300 text-black px-6 py-3 rounded-lg hover:bg-gray-400"
-        >
+      <!-- Coordonnées bancaires -->
+      <section class="section">
+        <h2>🏦 Coordonnées bancaires (si applicable)</h2>
+        <label>IBAN :</label>
+        <textarea v-model="invoice.bankDetails" class="textarea" rows="3" placeholder="IBAN : FR76 1234 5678 9012 3456 7890 123">
+        </textarea>
+      </section>
+
+      <!-- Mentions légales -->
+      <section class="section">
+        <h2>📝 Mentions légales</h2>
+        <label>Texte affiché en bas de la facture</label>
+        <textarea v-model="invoice.footer" class="textarea" rows="4"></textarea>
+      </section>
+
+      <div class="actions">
+        <button type="button" @click="generatePDF('preview')" class="secondary-button">
           👁️ Aperçu PDF
         </button>
-        <button
-          type="button"
-          @click="generatePDF('download')"
-          class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-        >
+        <button type="button" @click="generatePDF('download')" class="primary-button">
           ⬇️ Télécharger
         </button>
       </div>
@@ -193,38 +217,52 @@ import { ref, computed } from 'vue'
 const pdfContent = ref(null)
 
 const invoice = ref({
-  vendorName: 'Entreprise Pro Services',
-  vendorAddress: '99 avenue des Affaires\n75000 Paris',
-  vendorSiret: 'SIRET : 987 654 321 00010',
-  vendorEmail: 'contact@entreprise-pro.fr',
-  vendorPhone: '01 98 76 54 32',
+  vendorName: 'Entreprise Générale',
+  vendorAddress: '12 rue de l’Entreprise\n75000 Paris',
+  vendorSiret: 'SIRET : 123 456 789 00012',
+  vendorEmail: 'contact@entreprise.fr',
+  vendorPhone: '01 23 45 67 89',
 
-  clientName: 'Société Client Premium',
-  clientAddress: '15 rue des Clients\n75001 Paris',
-  clientEmail: 'contact@clientpremium.fr',
-  clientPhone: '06 11 22 33 44',
+  clientName: 'Monsieur Jean Client',
+  clientAddress: '42 avenue des Clients\n75001 Paris',
+  clientEmail: 'jean.client@example.com',
+  clientPhone: '06 12 34 56 78',
 
   number: 'FAC-2025-001',
   date: new Date().toISOString().substring(0, 10),
 
   items: [
-    { description: 'Consultation technique', qty: 2, price: 120 },
-    { description: 'Installation de matériel', qty: 1, price: 850 },
-    { description: 'Maintenance mensuelle (3 mois)', qty: 3, price: 75 }
+    { description: 'Consultation', qty: 2, price: 100 },
+    { description: 'Installation', qty: 1, price: 250 }
   ],
 
-  footer: `Paiement par virement bancaire sous 30 jours.\nIBAN : FR76 1234 5678 9012 3456 7890 123\nTVA non applicable, art. 293 B du CGI.\nMerci de votre confiance.`
+  paymentMethod: 'Espèces',
+  bankDetails: 'IBAN : FR76 1234 5678 9012 3456 7890 123',
+
+  footer: `Facture payable sous 30 jours.\nTVA non applicable, art. 293 B du CGI.`
 })
 
 const addItem = () => {
   invoice.value.items.push({ description: '', qty: 1, price: 0 })
 }
 
-const format = (val) => Number(val).toFixed(2)
+const formatNumber = (val) => Number(val).toFixed(2)
 
 const total = computed(() =>
-  format(invoice.value.items.reduce((acc, item) => acc + item.qty * item.price, 0))
+  formatNumber(invoice.value.items.reduce((acc, item) => acc + item.qty * item.price, 0))
 )
+
+const getBankField = (field) => {
+  const lines = invoice.value.bankDetails.split('\n')
+  const map = { iban: ''}
+
+  lines.forEach(line => {
+    const lower = line.toLowerCase()
+    if (lower.includes('iban')) map.iban = line.split(':').slice(1).join(':').trim()
+  })
+
+  return map[field] || ''
+}
 
 const generatePDF = async (action) => {
   if (!pdfContent.value) return
@@ -252,3 +290,233 @@ const generatePDF = async (action) => {
   }
 }
 </script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  font-family: 'Roboto', sans-serif;
+  background: #f7fafc;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.pdf-content {
+  background: white;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  margin: auto;
+  font-size: 14px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-top: 25px;
+}
+
+.block {
+  flex: 1 1 30%;
+}
+
+.details {
+  margin-top: 50px;
+}
+.facture-block {
+  text-align: center;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.section-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.text-block p {
+  margin: 0.2rem 0;
+}
+
+.facture-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.facture-table th, .facture-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: right;
+}
+
+.facture-table th:first-child,
+.facture-table td:first-child {
+  text-align: left;
+}
+
+.total {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 2rem;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2rem;
+}
+
+.form {
+  background: white;
+  padding: 3rem;
+  max-width: 1000px;
+  margin: 3rem auto;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.section {
+  margin-bottom: 4rem;
+}
+
+.grid-2, .grid-3 {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.full {
+  grid-column: span 2;
+}
+
+.input, .textarea {
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  padding: 1rem; /* équivalent à p-4 */
+  border: 1px solid #ccc; /* une bordure simple */
+  border-radius: 12px; /* arrondi équivalent à rounded-xl */
+  font-size: 1rem;
+  background-color: #f9fafb; /* couleur de fond similaire à celle de Tailwind */
+  box-sizing: border-box; /* Pour que le padding ne dépasse pas la largeur de l'élément */
+  transition: border-color 0.2s ease-in-out; /* Transition douce lors du focus */
+}
+
+.input:focus, .textarea:focus {
+  border-color: #2563eb; /* Couleur de la bordure lors du focus, bleu similaire à Tailwind */
+  outline: none; /* Pour supprimer le contour bleu par défaut */
+}
+
+.bank-details-box {
+  background: #f9f9f9;
+  border-left: 4px solid #4a90e2;
+  padding: 10px 15px;
+  margin-top: 15px;
+  border-radius: 4px;
+}
+
+.bank-details-box h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #000000;
+}
+
+.bank-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.bank-list li {
+  margin: 4px 0;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.primary-button, .secondary-button {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: #2563eb;
+  color: white;
+}
+
+.primary-button:hover {
+  background: #1e40af;
+}
+
+.secondary-button {
+  background: #e5e7eb;
+  color: black;
+}
+
+.secondary-button:hover {
+  background: #d1d5db;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .block {
+    text-align: left;
+  }
+}
+</style>

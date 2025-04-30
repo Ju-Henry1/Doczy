@@ -1,38 +1,34 @@
 <template>
-  <div class="bg-gray-100 min-h-screen p-6 space-y-12">
+  <div class="container">
     <!-- Aperçu PDF -->
-    <div
-      ref="pdfContent"
-      class="bg-white text-sm leading-relaxed space-y-6"
-      style="width: 210mm; min-height: 297mm; padding: 20mm; margin: auto;"
-    >
-      <!-- En-tête PRO -->
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6 text-sm">
+    <div ref="pdfContent" class="pdf-content">
+      <!-- En-tête -->
+      <div class="header">
         <!-- Émetteur -->
-        <div class="w-full md:w-1/3">
-          <h2 class="uppercase text-xs font-semibold text-gray-500 tracking-wide mb-2">Émetteur</h2>
-          <div class="text-gray-800 leading-relaxed text-sm">
-            <p class="font-semibold">{{ devis.vendorName }}</p>
-            <p class="whitespace-pre-line">{{ devis.vendorAddress }}</p>
+        <div class="block">
+          <h2 class="section-title">Émetteur</h2>
+          <div class="text-block">
+            <p class="font-bold">{{ devis.vendorName }}</p>
+            <p class="whitespace-pre">{{ devis.vendorAddress }}</p>
             <p>{{ devis.vendorSiret }}</p>
             <p>{{ devis.vendorEmail }}</p>
             <p>{{ devis.vendorPhone }}</p>
           </div>
         </div>
 
-        <!-- Bloc Devis -->
-        <div class="w-full md:w-1/3 text-center bg-gray-50 border border-gray-200 rounded-md py-4">
-          <h1 class="text-xl font-bold text-gray-800 uppercase">Devis</h1>
-          <p class="text-sm text-gray-500 mt-1">N° {{ devis.number }}</p>
-          <p class="text-sm text-gray-500">Date : {{ devis.date }}</p>
+        <!-- Devis -->
+        <div class="facture-block">
+          <h1>Devis</h1>
+          <p class="small-text">N° {{ devis.number }}</p>
+          <p class="small-text">Date : {{ devis.date }}</p>
         </div>
 
         <!-- Client -->
-        <div class="w-full md:w-1/3 text-right">
-          <h2 class="uppercase text-xs font-semibold text-gray-500 tracking-wide mb-2">Destinataire</h2>
-          <div class="text-gray-800 leading-relaxed text-sm">
-            <p class="font-semibold">{{ devis.clientName }}</p>
-            <p class="whitespace-pre-line">{{ devis.clientAddress }}</p>
+        <div class="block right-align">
+          <h2 class="section-title">Destinataire</h2>
+          <div class="text-block">
+            <p class="font-bold">{{ devis.clientName }}</p>
+            <p class="whitespace-pre">{{ devis.clientAddress }}</p>
             <p>{{ devis.clientEmail }}</p>
             <p>{{ devis.clientPhone }}</p>
           </div>
@@ -40,147 +36,150 @@
       </div>
 
       <!-- Détails devis -->
-      <div>
-        <h2 class="text-lg font-semibold text-gray-800 mb-2">Détails du devis</h2>
-        <table class="w-full border text-sm">
-          <thead class="bg-gray-100">
+      <div class="details">
+        <h2 class="details-title">Détails du devis</h2>
+        <br>
+        <table class="facture-table">
+          <thead>
             <tr>
-              <th class="p-2 border">Prestation</th>
-              <th class="p-2 border text-right">Qté</th>
-              <th class="p-2 border text-right">Prix unitaire</th>
-              <th class="p-2 border text-right">Total</th>
+              <th>Prestation</th>
+              <th>Qté</th>
+              <th>Prix unitaire</th>
+              <th>Total</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in devis.items" :key="index">
-              <td class="p-2 border">{{ item.description }}</td>
-              <td class="p-2 border text-right">{{ item.qty }}</td>
-              <td class="p-2 border text-right">{{ formatNumber(item.price) }} €</td>
-              <td class="p-2 border text-right">{{ formatNumber(item.qty * item.price) }} €</td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.qty }}</td>
+              <td>{{ formatNumber(item.price) }} €</td>
+              <td>{{ formatNumber(item.qty * item.price) }} €</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="text-right text-lg font-semibold mt-4">
+      <br>
+
+      <div class="total">
         Total estimé : {{ total }} €
       </div>
 
-      <div class="text-xs text-gray-500 border-t pt-4 whitespace-pre-line">
+      <div class="footer-text">
         {{ devis.footer }}
       </div>
     </div>
 
     <!-- Formulaire -->
-    <form class="max-w-4xl mx-auto bg-white p-12 shadow rounded-2xl space-y-16">
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">🏢 Émetteur (vous)</h2>
-        <div class="grid grid-cols-2 gap-6">
-          <div>
-            <label class="text-xs text-gray-500">Nom de l'entreprise émettrice</label>
-            <input v-model="devis.vendorName" class="p-4 border rounded-xl w-full" />
-          </div>
-          <div>
-            <label class="text-xs text-gray-500">Numéro de SIRET ou TVA</label>
-            <input v-model="devis.vendorSiret" class="p-4 border rounded-xl w-full" />
-          </div>
-          <div>
-            <label class="text-xs text-gray-500">Adresse email de contact</label>
-            <input v-model="devis.vendorEmail" class="p-4 border rounded-xl w-full" />
-          </div>
-          <div>
-            <label class="text-xs text-gray-500">Numéro de téléphone</label>
-            <input v-model="devis.vendorPhone" class="p-4 border rounded-xl w-full" />
-          </div>
-          <div class="col-span-2">
-            <label class="text-xs text-gray-500">Adresse postale complète</label>
-            <textarea v-model="devis.vendorAddress" rows="2" class="p-4 border rounded-xl w-full" />
-          </div>
-        </div>
-      </section>
-
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">👤 Destinataire (client)</h2>
-        <div class="grid grid-cols-2 gap-6">
-          <div>
-            <label class="text-xs text-gray-500">Nom du client ou de l'entreprise</label>
-            <input v-model="devis.clientName" class="p-4 border rounded-xl w-full" />
-          </div>
-          <div>
-            <label class="text-xs text-gray-500">Adresse email du client</label>
-            <input v-model="devis.clientEmail" class="p-4 border rounded-xl w-full" />
-          </div>
-          <div>
-            <label class="text-xs text-gray-500">Numéro de téléphone du client</label>
-            <input v-model="devis.clientPhone" class="p-4 border rounded-xl w-full" />
-          </div>
-          <div class="col-span-2">
-            <label class="text-xs text-gray-500">Adresse du client</label>
-            <textarea v-model="devis.clientAddress" rows="2" class="p-4 border rounded-xl w-full" />
-          </div>
-        </div>
-      </section>
-
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">🗓️ Référence du devis</h2>
-        <div class="grid grid-cols-2 gap-6">
-          <div>
-            <label class="text-xs text-gray-500">Numéro du devis</label>
-            <input v-model="devis.number" class="p-4 border rounded-xl w-full" />
-          </div>
-          <div>
-            <label class="text-xs text-gray-500">Date d'émission</label>
-            <input v-model="devis.date" type="date" class="p-4 border rounded-xl w-full" />
-          </div>
-        </div>
-      </section>
-
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">📦 Prestations</h2>
-        <div class="space-y-4">
-          <div v-for="(item, index) in devis.items" :key="index" class="grid grid-cols-3 gap-4">
+    <!-- Formulaire Devis -->
+      <form class="form">
+        <!-- Émetteur -->
+        <section class="section">
+          <h2>🏢 Émetteur (vous)</h2>
+          <div class="grid-2">
             <div>
-              <label class="text-xs text-gray-500">Description</label>
-              <input v-model="item.description" class="p-4 border rounded-xl w-full" />
+              <label>Nom de l'entreprise émettrice</label>
+              <input v-model="devis.vendorName" class="input" />
             </div>
             <div>
-              <label class="text-xs text-gray-500">Quantité</label>
-              <input v-model.number="item.qty" type="number" class="p-4 border rounded-xl w-full" />
+              <label>Numéro de SIRET ou TVA</label>
+              <input v-model="devis.vendorSiret" class="input" />
             </div>
             <div>
-              <label class="text-xs text-gray-500">Prix unitaire (€)</label>
-              <input v-model.number="item.price" type="number" class="p-4 border rounded-xl w-full" />
+              <label>Adresse email de contact</label>
+              <input v-model="devis.vendorEmail" class="input" />
+            </div>
+            <div>
+              <label>Numéro de téléphone</label>
+              <input v-model="devis.vendorPhone" class="input" />
+            </div>
+            <div class="full">
+              <label>Adresse postale complète</label>
+              <textarea v-model="devis.vendorAddress" class="textarea" rows="2"></textarea>
             </div>
           </div>
-          <button @click.prevent="addItem" class="text-blue-600 hover:underline text-sm">
-            + Ajouter une ligne
+        </section>
+
+        <!-- Client -->
+        <section class="section">
+          <h2>👤 Destinataire (client)</h2>
+          <div class="grid-2">
+            <div>
+              <label>Nom du client ou de l'entreprise</label>
+              <input v-model="devis.clientName" class="input" />
+            </div>
+            <div>
+              <label>Adresse email du client</label>
+              <input v-model="devis.clientEmail" class="input" />
+            </div>
+            <div>
+              <label>Numéro de téléphone du client</label>
+              <input v-model="devis.clientPhone" class="input" />
+            </div>
+            <div class="full">
+              <label>Adresse du client</label>
+              <textarea v-model="devis.clientAddress" class="textarea" rows="2"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- Référence -->
+        <section class="section">
+          <h2>🗓️ Référence du devis</h2>
+          <div class="grid-2">
+            <div>
+              <label>Numéro du devis</label>
+              <input v-model="devis.number" class="input" />
+            </div>
+            <div>
+              <label>Date d'émission</label>
+              <input v-model="devis.date" class="input" type="date" />
+            </div>
+          </div>
+        </section>
+
+        <!-- Prestations -->
+        <section class="section">
+          <h2>📦 Prestations</h2>
+          <div class="space-y">
+            <div v-for="(item, index) in devis.items" :key="index" class="grid-3">
+              <div>
+                <label>Description</label>
+                <input v-model="item.description" class="input" />
+              </div>
+              <div>
+                <label>Quantité</label>
+                <input v-model.number="item.qty" class="input" type="number" />
+              </div>
+              <div>
+                <label>Prix unitaire (€)</label>
+                <input v-model.number="item.price" class="input" type="number" />
+              </div>
+            </div>
+            <br>
+            <button @click.prevent="addItem" class="link-button">
+              + Ajouter une ligne
+            </button>
+          </div>
+        </section>
+
+        <!-- Mentions légales -->
+        <section class="section">
+          <h2>📝 Mentions légales</h2>
+          <label>Texte affiché en bas du devis</label>
+          <textarea v-model="devis.footer" class="textarea" rows="4"></textarea>
+        </section>
+
+        <div class="actions">
+          <button type="button" @click="generatePDF('preview')" class="secondary-button">
+            👁️ Aperçu PDF
+          </button>
+          <button type="button" @click="generatePDF('download')" class="primary-button">
+            ⬇️ Télécharger
           </button>
         </div>
-      </section>
+      </form>
 
-      <section class="space-y-6">
-        <h2 class="text-2xl font-bold text-gray-800">📝 Mentions légales</h2>
-        <label class="text-xs text-gray-500">Texte affiché en bas du devis (validité, mode de règlement...)</label>
-        <textarea v-model="devis.footer" rows="4" class="p-4 border rounded-xl w-full" />
-      </section>
-
-      <div class="flex justify-end gap-6 pt-8 border-t mt-6">
-        <button
-          type="button"
-          @click="generatePDF('preview')"
-          class="bg-gray-300 text-black px-6 py-3 rounded-lg hover:bg-gray-400"
-        >
-          👁️ Aperçu PDF
-        </button>
-        <button
-          type="button"
-          @click="generatePDF('download')"
-          class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-        >
-          ⬇️ Télécharger
-        </button>
-      </div>
-    </form>
   </div>
 </template>
 
@@ -201,16 +200,16 @@ const devis = ref({
   clientEmail: 'jean.client@example.com',
   clientPhone: '06 12 34 56 78',
 
+
   number: 'DEV-2025-001',
   date: new Date().toISOString().substring(0, 10),
 
   items: [
-    { description: 'Conseil et accompagnement', qty: 3, price: 90 },
-    { description: 'Fourniture de matériel', qty: 2, price: 150 },
-    { description: 'Livraison', qty: 1, price: 40 }
+    { description: 'Consultation', qty: 2, price: 100 },
+    { description: 'Installation', qty: 1, price: 250 }
   ],
 
-  footer: `Devis valable 30 jours à compter de la date d’émission.\nRèglement par virement à réception.\nTVA non applicable, art. 293 B du CGI.`
+  footer: 'Validité du devis : 30 jours. Merci de dater et signer pour acceptation.'
 })
 
 const addItem = () => {
@@ -249,3 +248,233 @@ const generatePDF = async (action) => {
   }
 }
 </script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  font-family: 'Roboto', sans-serif;
+  background: #f7fafc;
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+.pdf-content {
+  background: white;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  margin: auto;
+  font-size: 14px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  margin-top: 25px;
+}
+
+.block {
+  flex: 1 1 30%;
+}
+
+.details {
+  margin-top: 50px;
+}
+.facture-block {
+  text-align: center;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.section-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.text-block p {
+  margin: 0.2rem 0;
+}
+
+.facture-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.facture-table th, .facture-table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: right;
+}
+
+.facture-table th:first-child,
+.facture-table td:first-child {
+  text-align: left;
+}
+
+.total {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 2rem;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2rem;
+}
+
+.form {
+  background: white;
+  padding: 3rem;
+  max-width: 1000px;
+  margin: 3rem auto;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.section {
+  margin-bottom: 4rem;
+}
+
+.grid-2, .grid-3 {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid-2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.full {
+  grid-column: span 2;
+}
+
+.input, .textarea {
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  padding: 1rem; /* équivalent à p-4 */
+  border: 1px solid #ccc; /* une bordure simple */
+  border-radius: 12px; /* arrondi équivalent à rounded-xl */
+  font-size: 1rem;
+  background-color: #f9fafb; /* couleur de fond similaire à celle de Tailwind */
+  box-sizing: border-box; /* Pour que le padding ne dépasse pas la largeur de l'élément */
+  transition: border-color 0.2s ease-in-out; /* Transition douce lors du focus */
+}
+
+.input:focus, .textarea:focus {
+  border-color: #2563eb; /* Couleur de la bordure lors du focus, bleu similaire à Tailwind */
+  outline: none; /* Pour supprimer le contour bleu par défaut */
+}
+
+.bank-details-box {
+  background: #f9f9f9;
+  border-left: 4px solid #4a90e2;
+  padding: 10px 15px;
+  margin-top: 15px;
+  border-radius: 4px;
+}
+
+.bank-details-box h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #000000;
+}
+
+.bank-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.bank-list li {
+  margin: 4px 0;
+}
+
+label {
+  display: block;
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.primary-button, .secondary-button {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary-button {
+  background: #2563eb;
+  color: white;
+}
+
+.primary-button:hover {
+  background: #1e40af;
+}
+
+.secondary-button {
+  background: #e5e7eb;
+  color: black;
+}
+
+.secondary-button:hover {
+  background: #d1d5db;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .block {
+    text-align: left;
+  }
+}
+</style>
