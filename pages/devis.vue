@@ -1,10 +1,9 @@
 <template>
   <div class="container">
-    <!-- Aperçu PDF -->
-    <div ref="pdfContent" class="pdf-content">
+    <!-- PDF uniquement sur desktop -->
+    <div ref="pdfContent" class="pdf-content" v-if="!isMobile">
       <!-- En-tête -->
       <div class="header">
-        <!-- Émetteur -->
         <div class="block">
           <h2 class="section-title">Émetteur</h2>
           <div class="text-block">
@@ -15,15 +14,11 @@
             <p>{{ devis.vendorPhone }}</p>
           </div>
         </div>
-
-        <!-- Devis -->
         <div class="facture-block">
           <h1>Devis</h1>
           <p class="small-text">N° {{ devis.number }}</p>
           <p class="small-text">Date : {{ devis.date }}</p>
         </div>
-
-        <!-- Client -->
         <div class="block right-align">
           <h2 class="section-title">Destinataire</h2>
           <div class="text-block">
@@ -34,7 +29,6 @@
           </div>
         </div>
       </div>
-
       <!-- Détails devis -->
       <div class="details">
         <h2 class="details-title">Détails du devis</h2>
@@ -58,135 +52,136 @@
           </tbody>
         </table>
       </div>
-
       <br>
-
       <div class="total">
         Total estimé : {{ total }} €
       </div>
-
       <div class="footer-text">
         {{ devis.footer }}
       </div>
     </div>
 
     <!-- Formulaire -->
-    <!-- Formulaire Devis -->
-      <form class="form">
-        <!-- Émetteur -->
-        <section class="section">
-          <h2>🏢 Émetteur (vous)</h2>
-          <div class="grid-2">
-            <div>
-              <label>Nom de l'entreprise émettrice</label>
-              <input v-model="devis.vendorName" class="input" />
-            </div>
-            <div>
-              <label>Numéro de SIRET ou TVA</label>
-              <input v-model="devis.vendorSiret" class="input" />
-            </div>
-            <div>
-              <label>Adresse email de contact</label>
-              <input v-model="devis.vendorEmail" class="input" />
-            </div>
-            <div>
-              <label>Numéro de téléphone</label>
-              <input v-model="devis.vendorPhone" class="input" />
-            </div>
-            <div class="full">
-              <label>Adresse postale complète</label>
-              <textarea v-model="devis.vendorAddress" class="textarea" rows="2"></textarea>
-            </div>
+    <form class="form">
+      <!-- Émetteur -->
+      <section class="section">
+        <h2>🏢 Émetteur (vous)</h2>
+        <div class="grid-2">
+          <div>
+            <label>Nom de l'entreprise émettrice</label>
+            <input v-model="devis.vendorName" class="input" />
           </div>
-        </section>
-
-        <!-- Client -->
-        <section class="section">
-          <h2>👤 Destinataire (client)</h2>
-          <div class="grid-2">
-            <div>
-              <label>Nom du client ou de l'entreprise</label>
-              <input v-model="devis.clientName" class="input" />
-            </div>
-            <div>
-              <label>Adresse email du client</label>
-              <input v-model="devis.clientEmail" class="input" />
-            </div>
-            <div>
-              <label>Numéro de téléphone du client</label>
-              <input v-model="devis.clientPhone" class="input" />
-            </div>
-            <div class="full">
-              <label>Adresse du client</label>
-              <textarea v-model="devis.clientAddress" class="textarea" rows="2"></textarea>
-            </div>
+          <div>
+            <label>Numéro de SIRET ou TVA</label>
+            <input v-model="devis.vendorSiret" class="input" />
           </div>
-        </section>
-
-        <!-- Référence -->
-        <section class="section">
-          <h2>🗓️ Référence du devis</h2>
-          <div class="grid-2">
-            <div>
-              <label>Numéro du devis</label>
-              <input v-model="devis.number" class="input" />
-            </div>
-            <div>
-              <label>Date d'émission</label>
-              <input v-model="devis.date" class="input" type="date" />
-            </div>
+          <div>
+            <label>Adresse email de contact</label>
+            <input v-model="devis.vendorEmail" class="input" />
           </div>
-        </section>
-
-        <!-- Prestations -->
-        <section class="section">
-          <h2>📦 Prestations</h2>
-          <div class="space-y">
-            <div v-for="(item, index) in devis.items" :key="index" class="grid-3">
-              <div>
-                <label>Description</label>
-                <input v-model="item.description" class="input" />
-              </div>
-              <div>
-                <label>Quantité</label>
-                <input v-model.number="item.qty" class="input" type="number" />
-              </div>
-              <div>
-                <label>Prix unitaire (€)</label>
-                <input v-model.number="item.price" class="input" type="number" />
-              </div>
-            </div>
-            <br>
-            <button @click.prevent="addItem" class="link-button">
-              + Ajouter une ligne
-            </button>
+          <div>
+            <label>Numéro de téléphone</label>
+            <input v-model="devis.vendorPhone" class="input" />
           </div>
-        </section>
+          <div class="full">
+            <label>Adresse postale complète</label>
+            <textarea v-model="devis.vendorAddress" class="textarea" rows="2"></textarea>
+          </div>
+        </div>
+      </section>
 
-        <!-- Mentions légales -->
-        <section class="section">
-          <h2>📝 Mentions légales</h2>
-          <label>Texte affiché en bas du devis</label>
-          <textarea v-model="devis.footer" class="textarea" rows="4"></textarea>
-        </section>
+      <!-- Client -->
+      <section class="section">
+        <h2>👤 Destinataire (client)</h2>
+        <div class="grid-2">
+          <div>
+            <label>Nom du client ou de l'entreprise</label>
+            <input v-model="devis.clientName" class="input" />
+          </div>
+          <div>
+            <label>Adresse email du client</label>
+            <input v-model="devis.clientEmail" class="input" />
+          </div>
+          <div>
+            <label>Numéro de téléphone du client</label>
+            <input v-model="devis.clientPhone" class="input" />
+          </div>
+          <div class="full">
+            <label>Adresse du client</label>
+            <textarea v-model="devis.clientAddress" class="textarea" rows="2"></textarea>
+          </div>
+        </div>
+      </section>
 
-        <div class="actions">
-          <button type="button" @click="generatePDF('preview')" class="secondary-button">
-            👁️ Aperçu PDF
-          </button>
-          <button type="button" @click="generatePDF('download')" class="primary-button">
-            ⬇️ Télécharger
+      <!-- Référence -->
+      <section class="section">
+        <h2>🗓️ Référence du devis</h2>
+        <div class="grid-2">
+          <div>
+            <label>Numéro du devis</label>
+            <input v-model="devis.number" class="input" />
+          </div>
+          <div>
+            <label>Date d'émission</label>
+            <input v-model="devis.date" class="input" type="date" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Prestations -->
+      <section class="section">
+        <h2>📦 Prestations</h2>
+        <div class="space-y">
+          <div v-for="(item, index) in devis.items" :key="index" class="grid-3">
+            <div>
+              <label>Description</label>
+              <input v-model="item.description" class="input" />
+            </div>
+            <div>
+              <label>Quantité</label>
+              <input v-model.number="item.qty" class="input" type="number" />
+            </div>
+            <div>
+              <label>Prix unitaire (€)</label>
+              <input v-model.number="item.price" class="input" type="number" />
+            </div>
+            <button @click.prevent="removeItem(index)" class="link-button red-button">❌ Supprimer</button>
+          </div>
+          <br>
+          <button @click.prevent="addItem" class="link-button">
+            + Ajouter une ligne
           </button>
         </div>
-      </form>
+      </section>
 
+      <!-- Mentions légales -->
+      <section class="section">
+        <h2>📝 Mentions légales</h2>
+        <label>Texte affiché en bas du devis</label>
+        <textarea v-model="devis.footer" class="textarea" rows="4"></textarea>
+      </section>
+
+      <div class="actions">
+        <button type="button" @click="generatePDF('preview')" class="secondary-button">
+          👁️ Aperçu PDF
+        </button>
+        <button type="button" @click="generatePDF('download')" class="primary-button">
+          ⬇️ Télécharger
+        </button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const pdfContent = ref(null)
+const isMobile = ref(false)
+
+onMounted(() => {
+  isMobile.value = window.innerWidth <= 768
+})
 
 const devis = ref({
   vendorName: 'Entreprise Générale',
@@ -194,29 +189,24 @@ const devis = ref({
   vendorSiret: 'SIRET : 123 456 789 00012',
   vendorEmail: 'contact@entreprise.fr',
   vendorPhone: '01 23 45 67 89',
-
   clientName: 'Monsieur Jean Client',
   clientAddress: '42 avenue des Clients\n75001 Paris',
   clientEmail: 'jean.client@example.com',
   clientPhone: '06 12 34 56 78',
-
-
   number: 'DEV-2025-001',
   date: new Date().toISOString().substring(0, 10),
-
   items: [
     { description: 'Consultation', qty: 2, price: 100 },
     { description: 'Installation', qty: 1, price: 250 }
   ],
-
   footer: 'Validité du devis : 30 jours. Merci de dater et signer pour acceptation.'
 })
 
-const addItem = () => {
-  devis.value.items.push({ description: '', qty: 1, price: 0 })
+const addItem = () => devis.value.items.push({ description: '', qty: 1, price: 0 })
+const removeItem = index => {
+  devis.value.items.splice(index, 1)
 }
-
-const formatNumber = (val) => Number(val).toFixed(2)
+const formatNumber = val => Number(val).toFixed(2)
 
 const total = computed(() =>
   formatNumber(devis.value.items.reduce((acc, item) => acc + item.qty * item.price, 0))
@@ -227,11 +217,7 @@ const generatePDF = async (action) => {
   const jsPDF = (await import('jspdf')).default
   const html2canvas = (await import('html2canvas')).default
 
-  const canvas = await html2canvas(pdfContent.value, {
-    scale: 2,
-    useCORS: true
-  })
-
+  const canvas = await html2canvas(pdfContent.value, { scale: 2, useCORS: true })
   const imgData = canvas.toDataURL('image/png')
   const pdf = new jsPDF('p', 'mm', 'a4')
   const pageWidth = 210
@@ -277,9 +263,9 @@ body, html {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 2rem;
   gap: 1.5rem;
   margin-top: 25px;
+  margin-bottom: 2rem;
 }
 
 .block {
@@ -289,6 +275,7 @@ body, html {
 .details {
   margin-top: 50px;
 }
+
 .facture-block {
   text-align: center;
   background: #f9fafb;
@@ -375,42 +362,18 @@ body, html {
 .input, .textarea {
   font-family: 'Roboto', sans-serif;
   width: 100%;
-  padding: 1rem; /* équivalent à p-4 */
-  border: 1px solid #ccc; /* une bordure simple */
-  border-radius: 12px; /* arrondi équivalent à rounded-xl */
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
   font-size: 1rem;
-  background-color: #f9fafb; /* couleur de fond similaire à celle de Tailwind */
-  box-sizing: border-box; /* Pour que le padding ne dépasse pas la largeur de l'élément */
-  transition: border-color 0.2s ease-in-out; /* Transition douce lors du focus */
+  background-color: #f9fafb;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease-in-out;
 }
 
 .input:focus, .textarea:focus {
-  border-color: #2563eb; /* Couleur de la bordure lors du focus, bleu similaire à Tailwind */
-  outline: none; /* Pour supprimer le contour bleu par défaut */
-}
-
-.bank-details-box {
-  background: #f9f9f9;
-  border-left: 4px solid #4a90e2;
-  padding: 10px 15px;
-  margin-top: 15px;
-  border-radius: 4px;
-}
-
-.bank-details-box h3 {
-  margin: 0 0 10px;
-  font-size: 16px;
-  color: #000000;
-}
-
-.bank-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.bank-list li {
-  margin: 4px 0;
+  border-color: #2563eb;
+  outline: none;
 }
 
 label {
@@ -469,12 +432,38 @@ label {
   text-decoration: underline;
 }
 
+.red-button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.red-button:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .grid-2, .grid-3 {
     grid-template-columns: 1fr;
   }
+
   .block {
     text-align: left;
+  }
+
+  .space-y > div {
+    background: #f3f4f6;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .pdf-content {
+    display: none;
   }
 }
 </style>
