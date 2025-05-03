@@ -5,16 +5,15 @@
 
       <section class="legal-info">
         <div class="section">
-          <h2 class="subtitle">Éditeur du site</h2>
-          <p><strong>Doczy</strong><br />
-            Micro-entreprise - SIRET : 123 456 789 00012<br />
-            12 rue des Documents, 75000 Paris<br />
-            Email : contact@doczy.fr</p>
+          <h2 class="subtitle">Éditeur</h2>
+          <p><strong>Doczy</strong> est une application personnelle développée et maintenue par Julien Henry.<br />
+            Cette application est proposée sans but commercial.<br />
+            Contact : contact.henryjulien@gmail.com</p>
         </div>
 
         <div class="section">
           <h2 class="subtitle">Responsable de publication</h2>
-          <p>Jean Dupont – contact@doczy.fr</p>
+          <p>Julien Henry</p>
         </div>
 
         <div class="section">
@@ -27,14 +26,14 @@
         <div class="section">
           <h2 class="subtitle">Propriété intellectuelle</h2>
           <p>
-            Le contenu du site (textes, images, interface) est la propriété exclusive de Doczy, sauf mention contraire. Toute reproduction ou utilisation non autorisée est interdite.
+            Le contenu de l'application (textes, images, interface) est la propriété exclusive de Julien Henry, sauf mention contraire. Toute reproduction ou utilisation non autorisée est interdite.
           </p>
         </div>
 
         <div class="section">
           <h2 class="subtitle">Cookies et données personnelles</h2>
           <p>
-            Le site ne collecte aucune donnée personnelle sans votre consentement. Aucun cookie n'est utilisé à des fins de suivi publicitaire. Toutes les données sont traitées localement dans votre navigateur.
+            L'application ne collecte aucune donnée personnelle sans votre consentement. Aucun cookie n'est utilisé à des fins de suivi publicitaire. Toutes les données sont traitées localement dans votre navigateur.
           </p>
         </div>
 

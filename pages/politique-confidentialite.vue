@@ -7,49 +7,49 @@
         <div class="section-item">
           <h2 class="section-title">1. Introduction</h2>
           <p>
-            Chez Doczy, la confidentialité de vos données est une priorité. Cette politique de confidentialité explique comment nous traitons vos données lors de l'utilisation de notre application.
+            Doczy est une application personnelle développée par Julien Henry. Le respect de votre vie privée est fondamental. Cette politique de confidentialité décrit comment l’application traite vos données.
           </p>
         </div>
 
         <div class="section-item">
           <h2 class="section-title">2. Collecte des données</h2>
           <p>
-            Doczy ne collecte, ne stocke ni ne transmet aucune donnée personnelle à des serveurs externes. Tous les formulaires (facture, devis, etc.) sont traités <strong>localement dans votre navigateur</strong>.
+            Aucune donnée personnelle n’est collectée, stockée ou transmise vers un serveur externe. Tous les formulaires (facture, devis, etc.) sont traités <strong>localement dans votre navigateur</strong>.
           </p>
         </div>
 
         <div class="section-item">
           <h2 class="section-title">3. Utilisation des données</h2>
           <p>
-            Les données saisies servent uniquement à générer des documents PDF localement sur votre appareil. Elles ne sont jamais partagées ni utilisées à d'autres fins.
+            Les données saisies sont uniquement utilisées pour générer des documents PDF localement sur votre appareil. Elles ne sont jamais partagées, stockées ou utilisées à d'autres fins.
           </p>
         </div>
 
         <div class="section-item">
           <h2 class="section-title">4. Cookies</h2>
           <p>
-            Le site n'utilise aucun cookie à des fins publicitaires ou de suivi. Seuls des cookies techniques peuvent être utilisés pour améliorer l'expérience utilisateur (ex : thème, langue).
+            L’application n’utilise aucun cookie publicitaire ou de suivi. Seuls des cookies techniques peuvent être utilisés pour mémoriser vos préférences (comme le thème ou la langue).
           </p>
         </div>
 
         <div class="section-item">
           <h2 class="section-title">5. Sécurité</h2>
           <p>
-            Comme aucune donnée n'est transmise à un serveur, le risque lié à la fuite ou à la compromission des données est considérablement réduit.
+            Étant donné que toutes les données sont traitées localement et qu'aucune transmission n'a lieu, les risques liés à la fuite ou à la compromission de données sont très limités.
           </p>
         </div>
 
         <div class="section-item">
           <h2 class="section-title">6. Vos droits</h2>
           <p>
-            Conformément au RGPD, vous avez le droit d'accéder, de modifier ou de supprimer vos données personnelles. Toutefois, comme Doczy ne conserve aucune donnée, ces droits s'appliquent uniquement à ce que vous gérez localement.
+            Conformément au RGPD, vous avez des droits sur vos données personnelles. Cependant, comme Doczy ne collecte ni ne stocke aucune information, l'exercice de ces droits se limite aux données que vous gérez vous-même sur votre appareil.
           </p>
         </div>
 
         <div class="section-item">
           <h2 class="section-title">7. Contact</h2>
           <p>
-            Pour toute question concernant la confidentialité, vous pouvez nous contacter à : <a href="mailto:contact@doczy.fr" class="contact-link">contact@doczy.fr</a>
+            Pour toute question liée à la confidentialité, vous pouvez contacter Julien Henry à : <a href="mailto:contact.henryjulien@gmail.com" class="contact-link">contact.henryjulien@gmail.com</a>
           </p>
         </div>
       </section>

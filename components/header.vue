@@ -3,16 +3,19 @@
     <div class="container">
       <div class="header-content">
         <!-- Logo -->
-        <NuxtLink to="/" class="logo">
-          📘​ Doczy
-        </NuxtLink>
+        <NuxtLink to="/" class="logo">📘 Doczy</NuxtLink>
+
+        <!-- Hamburger (mobile) -->
+        <button class="hamburger" @click="isOpen = !isOpen">
+          ☰
+        </button>
 
         <!-- Navigation -->
-        <nav class="nav">
-          <NuxtLink to="/" class="nav-link">Accueil</NuxtLink>
-          <NuxtLink to="/docs" class="nav-link">Documentation</NuxtLink>
-          <NuxtLink to="/outils" class="nav-link">Les Outils</NuxtLink>
-          <NuxtLink to="/contact" class="nav-link">Contact</NuxtLink>
+        <nav :class="['nav', { open: isOpen }]">
+          <NuxtLink to="/" class="nav-link" @click="isOpen = false">Accueil</NuxtLink>
+          <NuxtLink to="/docs" class="nav-link" @click="isOpen = false">Documentation</NuxtLink>
+          <NuxtLink to="/outils" class="nav-link" @click="isOpen = false">Les Outils</NuxtLink>
+          <NuxtLink to="/contact" class="nav-link" @click="isOpen = false">Contact</NuxtLink>
         </nav>
       </div>
     </div>
@@ -20,20 +23,19 @@
 </template>
 
 <script setup>
-// Rien à déclarer ici pour l'instant
+import { ref } from 'vue'
+const isOpen = ref(false)
 </script>
 
 <style scoped>
-/* Importation de la font Roboto depuis Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-/* Général */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Header */
 .header {
   font-family: 'Roboto', sans-serif;
   background-color: white;
@@ -55,6 +57,7 @@
   justify-content: space-between;
   align-items: center;
   height: 64px;
+  position: relative;
 }
 
 .logo {
@@ -68,7 +71,6 @@
   color: #2563eb;
 }
 
-/* Navigation */
 .nav {
   display: flex;
   gap: 24px;
@@ -87,18 +89,41 @@
   color: #1d4ed8;
 }
 
-/* Responsivité */
+/* Hamburger button */
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1d4ed8;
+}
+
+/* Mobile Styles */
 @media (max-width: 768px) {
-  .header-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    height: auto;
+  .hamburger {
+    display: block;
   }
 
   .nav {
     flex-direction: column;
-    gap: 12px;
+    align-items: flex-start;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    display: none;
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0;
     font-size: 1rem;
   }
 }

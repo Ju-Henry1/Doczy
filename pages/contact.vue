@@ -61,23 +61,21 @@ const submitForm = () => {
 </script>
 
 <style scoped>
-/* Importer les polices de Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-/* Page globale */
+
 .contact-page {
   font-family: 'Roboto', sans-serif;
-  min-height: 100vh;
   background-color: #f9fafb;
-  padding: 4rem 1.5rem;
+  padding: 4rem 1rem;
+  display: flex;
+  justify-content: center;
 }
 
-/* Container */
 .container {
   max-width: 768px;
-  margin: 0 auto;
+  width: 100%;
 }
 
-/* Titre */
 .title {
   font-size: 2rem;
   font-weight: bold;
@@ -86,7 +84,6 @@ const submitForm = () => {
   margin-bottom: 2rem;
 }
 
-/* Description */
 .description {
   color: #4b5563;
   text-align: center;
@@ -94,7 +91,6 @@ const submitForm = () => {
   margin: 0 auto 2.5rem;
 }
 
-/* Formulaire */
 .contact-form {
   background: #ffffff;
   padding: 2rem;
@@ -103,9 +99,11 @@ const submitForm = () => {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Groupes de champs */
+/* Form group styles */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -118,7 +116,6 @@ const submitForm = () => {
   margin-bottom: 0.5rem;
 }
 
-/* Champs texte */
 input[type="text"],
 input[type="email"],
 textarea {
@@ -128,18 +125,17 @@ textarea {
   border-radius: 0.5rem;
   font-size: 1rem;
   resize: vertical;
-  transition: box-shadow 0.2s, border-color 0.2s;
+  box-sizing: border-box;
 }
 
-/* Focus sur input et textarea */
 input:focus,
 textarea:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
-/* Bouton envoyer */
+/* Submit */
 .form-submit {
   text-align: right;
 }
@@ -159,7 +155,6 @@ textarea:focus {
   background-color: #1d4ed8;
 }
 
-/* Message de succès */
 .success-message {
   color: #10b981;
   margin-top: 1.5rem;
@@ -169,7 +164,7 @@ textarea:focus {
 /* Responsive */
 @media (max-width: 640px) {
   .contact-form {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
   }
 
   .title {

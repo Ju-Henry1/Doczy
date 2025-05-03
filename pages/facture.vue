@@ -519,4 +519,44 @@ label {
     text-align: left;
   }
 }
+
+@media (max-width: 768px) {
+  .pdf-content {
+    width: 100%;
+    min-width: unset;
+    padding: 1rem;
+    box-sizing: border-box;
+    font-size: 13px;
+  }
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .facture-block {
+    text-align: left;
+  }
+  .form {
+    padding: 1.5rem;
+    margin: 2rem 1rem;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .pdf-content {
+    width: 595px; /* 210mm */
+    overflow-x: auto;
+    margin: 0 auto;
+  }
+  .container {
+    overflow-x: auto;
+  }
+}
 </style>
