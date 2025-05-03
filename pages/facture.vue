@@ -331,6 +331,7 @@ body, html {
 .details {
   margin-top: 50px;
 }
+
 .facture-block {
   text-align: center;
   background: #f9fafb;
@@ -386,7 +387,7 @@ body, html {
 
 .form {
   background: white;
-  padding: 3rem;
+  padding: 2rem;
   max-width: 1000px;
   margin: 3rem auto;
   border-radius: 16px;
@@ -427,136 +428,68 @@ body, html {
 }
 
 .input:focus, .textarea:focus {
-  border-color: #2563eb; /* Couleur de la bordure lors du focus, bleu similaire à Tailwind */
-  outline: none; /* Pour supprimer le contour bleu par défaut */
+  border-color: #4F46E5; /* couleur de bordure au focus */
+  outline: none; /* suppression du contour par défaut */
 }
 
-.bank-details-box {
-  background: #f9f9f9;
-  border-left: 4px solid #4a90e2;
-  padding: 10px 15px;
-  margin-top: 15px;
-  border-radius: 4px;
-}
-
-.bank-details-box h3 {
-  margin: 0 0 10px;
-  font-size: 16px;
-  color: #000000;
-}
-
-.bank-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0;
-}
-
-.bank-list li {
-  margin: 4px 0;
-}
-
-label {
-  display: block;
-  font-size: 14px;
-  color: #4b5563;
-  margin-bottom: 0.5rem;
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-.primary-button, .secondary-button {
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
+.link-button, .primary-button, .secondary-button {
+  padding: 1rem;
+  border-radius: 12px;
   cursor: pointer;
-}
-
-.primary-button {
-  background: #2563eb;
-  color: white;
-}
-
-.primary-button:hover {
-  background: #1e40af;
-}
-
-.secondary-button {
-  background: #e5e7eb;
-  color: black;
-}
-
-.secondary-button:hover {
-  background: #d1d5db;
 }
 
 .link-button {
-  background: none;
+  background-color: #e2e8f0;
   border: none;
-  color: #2563eb;
-  cursor: pointer;
-  text-align: left;
-  padding: 0;
-  font-size: 0.9rem;
+  color: #4A5568;
 }
 
-.link-button:hover {
-  text-decoration: underline;
+.primary-button {
+  background-color: #4F46E5;
+  color: white;
+  border: none;
 }
 
-@media (max-width: 768px) {
-  .grid-2, .grid-3 {
-    grid-template-columns: 1fr;
-  }
-  .block {
-    text-align: left;
-  }
+.secondary-button {
+  background-color: #63B3ED;
+  color: white;
+  border: none;
 }
 
 @media (max-width: 768px) {
   .pdf-content {
-    width: 100%;
-    min-width: unset;
-    padding: 1rem;
-    box-sizing: border-box;
-    font-size: 13px;
+    display: none;
   }
+
+  .form {
+    padding: 1rem;
+  }
+
   .header {
     flex-direction: column;
-    gap: 1rem;
+    align-items: flex-start;
   }
-  .facture-block {
+
+  .right-align {
     text-align: left;
   }
-  .form {
-    padding: 1.5rem;
-    margin: 2rem 1rem;
-  }
-  .actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .primary-button,
-  .secondary-button {
-    width: 100%;
-  }
-}
 
-@media (max-width: 576px) {
-  .pdf-content {
-    width: 595px; /* 210mm */
-    overflow-x: auto;
-    margin: 0 auto;
+  .font-bold {
+    font-size: 16px;
   }
-  .container {
-    overflow-x: auto;
+
+  .input {
+    font-size: 14px;
+    padding: 0.75rem;
+  }
+
+  .textarea {
+    font-size: 14px;
+    padding: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 14px;
   }
 }
 </style>
