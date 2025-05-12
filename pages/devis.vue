@@ -233,24 +233,29 @@ const generatePDF = async (action) => {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   if (action === 'preview') {
-    const blob = pdf.output('blob')
-    const url = URL.createObjectURL(blob)
+    const blob = pdf.output('blob');
+    const url = URL.createObjectURL(blob);
 
     if (isIOS) {
-      // Sur iOS, on télécharge
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `devis-${devis.value.number || 'doczy'}.pdf`
-      link.click()
+      // Télécharger même sur iOS
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `devis-${devis.value.number || 'doczy'}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } else {
-      // Sur les autres, on fait l'aperçu
-      window.open(url, '_blank')
+      // Desktop : ouvrir un nouvel onglet
+      window.open(url, '_blank');
     }
 
-    URL.revokeObjectURL(url)
-  } else {
+    URL.revokeObjectURL(url);
+  }
+  else {
+    // Télécharger le PDF
     pdf.save(`devis-${devis.value.number || 'doczy'}.pdf`)
   }
+
 
 }
 </script>
