@@ -230,13 +230,28 @@ const generatePDF = async (action) => {
 
   pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, imgHeight)
 
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+
   if (action === 'preview') {
     const blob = pdf.output('blob')
     const url = URL.createObjectURL(blob)
-    window.open(url, '_blank')
+
+    if (isIOS) {
+      // Sur iOS, on télécharge
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `devis-${devis.value.number || 'doczy'}.pdf`
+      link.click()
+    } else {
+      // Sur les autres, on fait l'aperçu
+      window.open(url, '_blank')
+    }
+
+    URL.revokeObjectURL(url)
   } else {
     pdf.save(`devis-${devis.value.number || 'doczy'}.pdf`)
   }
+
 }
 </script>
 

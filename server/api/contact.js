@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   // Contenu de l'e-mail
   const mailOptions = {
     from: `"${body.name}" <${body.email}>`,
-    to: 'contact.henryjulien@gmail.com',
+    to: 'noreply@doczy.fr',
     subject: body.subject,
     text: body.message
   }
