@@ -48,7 +48,10 @@
 </template>
 
 <script setup>
-// Rien à déclarer ici
+useHead({
+  title: 'Outils - Doczy',
+  meta: [{ name: 'description', content: 'Découvrez les outils pratiques proposés par Doczy pour vous et votre entreprise.' }],
+});
 </script>
 
 <style scoped>

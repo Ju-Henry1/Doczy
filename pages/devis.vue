@@ -14,7 +14,7 @@
             <p>{{ devis.vendorPhone }}</p>
           </div>
         </div>
-        <div class="facture-block">
+        <div class="devis-block">
           <h1>Devis</h1>
           <p class="small-text">N° {{ devis.number }}</p>
           <p class="small-text">Date : {{ devis.date }}</p>
@@ -33,7 +33,7 @@
       <div class="details">
         <h2 class="details-title">Détails du devis</h2>
         <br>
-        <table class="facture-table">
+        <table class="devis-table">
           <thead>
             <tr>
               <th>Prestation</th>
@@ -145,7 +145,7 @@
               <label>Prix unitaire (€)</label>
               <input v-model.number="item.price" class="input" type="number" />
             </div>
-            <button @click.prevent="removeItem(index)" class="link-button red-button">❌ Supprimer</button>
+            <button @click.prevent="removeItem(index)" class="btn-delete">Supprimer</button>
           </div>
           <br>
           <button @click.prevent="addItem" class="link-button">
@@ -162,10 +162,10 @@
       </section>
 
       <div class="actions">
-        <button type="button" @click="generatePDF('preview')" class="secondary-button">
+        <button type="button" @click="generatePDF('preview')" class="view-button">
           👁️ Aperçu PDF
         </button>
-        <button type="button" @click="generatePDF('download')" class="primary-button">
+        <button type="button" @click="generatePDF('download')" class="download-button">
           ⬇️ Télécharger
         </button>
       </div>
@@ -175,6 +175,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+
+useHead({
+  title: 'Devis - Doczy',
+  meta: [{ name: 'description', content: 'Créez vos devis personnalisés pour vos clients.' }],
+});
 
 const pdfContent = ref(null)
 const isMobile = ref(false)
@@ -276,7 +281,7 @@ body, html {
   margin-top: 50px;
 }
 
-.facture-block {
+.devis-block {
   text-align: center;
   background: #f9fafb;
   border: 1px solid #e5e7eb;
@@ -300,19 +305,19 @@ body, html {
   margin: 0.2rem 0;
 }
 
-.facture-table {
+.devis-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.facture-table th, .facture-table td {
+.devis-table th, .devis-table td {
   border: 1px solid #ccc;
   padding: 0.5rem;
   text-align: right;
 }
 
-.facture-table th:first-child,
-.facture-table td:first-child {
+.devis-table th:first-child,
+.devis-table td:first-child {
   text-align: left;
 }
 
@@ -353,6 +358,7 @@ body, html {
 
 .grid-3 {
   grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 15px;
 }
 
 .full {
@@ -383,6 +389,8 @@ label {
   margin-bottom: 0.5rem;
 }
 
+/* Tous les boutons */
+
 .actions {
   display: flex;
   justify-content: flex-end;
@@ -392,7 +400,17 @@ label {
   border-top: 1px solid #e5e7eb;
 }
 
-.primary-button, .secondary-button {
+.link-button, .primary-button, .secondary-button {
+  padding: 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+/* Bouton de téléchargement */
+
+.download-button {
+  background: #2563eb;
+  color: white;
   padding: 1rem 2rem;
   border: none;
   border-radius: 8px;
@@ -400,56 +418,66 @@ label {
   cursor: pointer;
 }
 
-.primary-button {
-  background: #2563eb;
-  color: white;
-}
-
-.primary-button:hover {
+.download-button:hover {
   background: #1e40af;
 }
 
-.secondary-button {
+/* Bouton d'aperçu PDF */
+
+.view-button {
   background: #e5e7eb;
   color: black;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-.secondary-button:hover {
+.view-button:hover {
   background: #d1d5db;
 }
 
+/* Bouton d'ajout de ligne */
+
 .link-button {
-  background: none;
+  background-color: #e2e8f0;
   border: none;
-  color: #2563eb;
-  cursor: pointer;
-  text-align: left;
-  padding: 0;
-  font-size: 0.9rem;
+  color: #4A5568;
 }
 
 .link-button:hover {
   text-decoration: underline;
 }
 
-.red-button {
-  background: none;
+/* Bouton de suppression */
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
   border: none;
-  color: red;
+  padding: 10px 20px;         /* légèrement réduit */
+  font-size: 14px;            /* plus petit */
+  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
-  text-align: left;
-  font-size: 0.9rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.red-button:hover {
-  text-decoration: underline;
+.btn-delete:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
 }
+
+.btn-delete:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
 
 @media (max-width: 768px) {
-  .grid-2, .grid-3 {
-    grid-template-columns: 1fr;
-  }
-
   .block {
     text-align: left;
   }
@@ -464,6 +492,35 @@ label {
 
   .pdf-content {
     display: none;
+  }
+
+    /* Sur mobile, changer la disposition des éléments à 1 colonne */
+    .grid-2 {
+    grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+  }
+
+  .grid-3 {
+    grid-template-columns: 1fr; /* Une seule colonne pour les prestations */
+  }
+
+  .full {
+    grid-column: span 1; /* Prendre 1 seule colonne sur mobile */
+  }
+
+  /* Ajouter un peu d'espacement entre les sections */
+  .section {
+    margin-bottom: 2rem;
+  }
+
+  /* Agrandir la zone de saisie de l'adresse pour plus de lisibilité */
+  .input, .textarea {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 </style>

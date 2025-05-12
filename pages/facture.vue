@@ -164,6 +164,7 @@
               <label>Prix unitaire (€)</label>
               <input v-model.number="item.price" class="input" type="number" />
             </div>
+            <button @click.prevent="removeItem(index)" class="btn-delete">Supprimer</button>
           </div>
           <br>
           <button @click.prevent="addItem" class="link-button">
@@ -200,10 +201,10 @@
       </section>
 
       <div class="actions">
-        <button type="button" @click="generatePDF('preview')" class="secondary-button">
+        <button type="button" @click="generatePDF('preview')" class="view-button">
           👁️ Aperçu PDF
         </button>
-        <button type="button" @click="generatePDF('download')" class="primary-button">
+        <button type="button" @click="generatePDF('download')" class="download-button">
           ⬇️ Télécharger
         </button>
       </div>
@@ -213,6 +214,11 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+
+useHead({
+  title: 'Factures - Doczy',
+  meta: [{ name: 'description', content: 'Créez vos factures personnalisés pour vos clients.' }],
+});
 
 const pdfContent = ref(null)
 
@@ -409,6 +415,7 @@ body, html {
 
 .grid-3 {
   grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 15px;
 }
 
 .full {
@@ -432,11 +439,63 @@ body, html {
   outline: none; /* suppression du contour par défaut */
 }
 
+label {
+  display: block;
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+/* Tous les boutons */
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+}
+
 .link-button, .primary-button, .secondary-button {
   padding: 1rem;
   border-radius: 12px;
   cursor: pointer;
 }
+
+/* Bouton de téléchargement */
+
+.download-button {
+  background: #2563eb;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.download-button:hover {
+  background: #1e40af;
+}
+
+/* Bouton d'aperçu PDF */
+
+.view-button {
+  background: #e5e7eb;
+  color: black;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.view-button:hover {
+  background: #d1d5db;
+}
+
+/* Bouton d'ajout de ligne */
 
 .link-button {
   background-color: #e2e8f0;
@@ -444,52 +503,81 @@ body, html {
   color: #4A5568;
 }
 
-.primary-button {
-  background-color: #4F46E5;
-  color: white;
-  border: none;
+.link-button:hover {
+  text-decoration: underline;
 }
 
-.secondary-button {
-  background-color: #63B3ED;
+
+/* Bouton de suppression */
+
+.btn-delete {
+  background-color: #e74c3c;
   color: white;
   border: none;
+  padding: 10px 20px;         /* légèrement réduit */
+  font-size: 14px;            /* plus petit */
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
+.btn-delete:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+.btn-delete:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 
 @media (max-width: 768px) {
+  .block {
+    text-align: left;
+  }
+
+  .space-y > div {
+    background: #f3f4f6;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+  }
+
   .pdf-content {
     display: none;
   }
 
-  .form {
-    padding: 1rem;
+    /* Sur mobile, changer la disposition des éléments à 1 colonne */
+    .grid-2 {
+    grid-template-columns: 1fr; /* Une seule colonne sur mobile */
   }
 
-  .header {
+  .grid-3 {
+    grid-template-columns: 1fr; /* Une seule colonne pour les prestations */
+  }
+
+  .full {
+    grid-column: span 1; /* Prendre 1 seule colonne sur mobile */
+  }
+
+  /* Ajouter un peu d'espacement entre les sections */
+  .section {
+    margin-bottom: 2rem;
+  }
+
+  /* Agrandir la zone de saisie de l'adresse pour plus de lisibilité */
+  .input, .textarea {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .actions {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .right-align {
-    text-align: left;
-  }
-
-  .font-bold {
-    font-size: 16px;
-  }
-
-  .input {
-    font-size: 14px;
-    padding: 0.75rem;
-  }
-
-  .textarea {
-    font-size: 14px;
-    padding: 0.75rem;
-  }
-
-  .section-title {
-    font-size: 14px;
   }
 }
 </style>

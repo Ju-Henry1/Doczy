@@ -38,6 +38,12 @@
 </template>
 
 <script setup>
+
+useHead({
+  title: 'Contact - Doczy',
+  meta: [{ name: 'description', content: 'Contactez-nous pour toute demande ou information.' }],
+});
+
 import { ref } from 'vue'
 
 const form = ref({
@@ -49,14 +55,24 @@ const form = ref({
 
 const success = ref(false)
 
-const submitForm = () => {
-  console.log('Formulaire envoyé :', form.value)
-  success.value = true
+const submitForm = async () => {
+  try {
+    const response = await $fetch('/api/contact', {
+      method: 'POST',
+      body: form.value
+    })
 
-  setTimeout(() => {
-    form.value = { name: '', email: '', subject: '', message: '' }
-    success.value = false
-  }, 3000)
+    if (response.success) {
+      success.value = true
+      form.value = { name: '', email: '', subject: '', message: '' }
+      setTimeout(() => (success.value = false), 3000)
+    } else {
+      alert('Une erreur est survenue.')
+    }
+  } catch (error) {
+    alert('Erreur lors de l’envoi.')
+    console.error(error)
+  }
 }
 </script>
 

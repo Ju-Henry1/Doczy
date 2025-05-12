@@ -58,7 +58,10 @@
 </template>
 
 <script setup>
-// Pas de logique nécessaire ici
+  useHead({
+    title: 'Politique de Confidentialité - Doczy',
+    meta: [{ name: 'description', content: 'Comment Doczy protège vos données personnelles.' }],
+  });
 </script>
 
 <style scoped>

@@ -111,6 +111,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
+useHead({
+  title: 'Contrat de Prestation - Doczy',
+  meta: [{ name: 'description', content: 'Consultez ou gérez vos contrats de prestation.' }],
+});
+
 const pdfContent = ref(null)
 
 const contract = ref({

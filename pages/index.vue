@@ -18,21 +18,22 @@
     <!-- Fonctionnalités clés -->
     <section class="features">
       <div class="features-container">
-        <h2 class="features-title">🛠️ Nos fonctionnalités</h2>
+        <h2 class="features-title">🛠️ Les Avantages</h2>
 
         <div class="feature-cards">
           <div class="feature-card">
-            <h3 class="feature-title">🧾 Factures & Devis</h3>
+            <h3 class="feature-title">🧾 Documents</h3>
             <p class="feature-description">Créez des documents professionnels pour vos clients, à envoyer en PDF en quelques secondes.</p>
           </div>
           <div class="feature-card">
-            <h3 class="feature-title">📑 Fiches de paie</h3>
-            <p class="feature-description">Remplissez les infos salarié/employeur et générez une fiche de paie lisible et conforme.</p>
+            <h3 class="feature-title">🔒 Sécurité & Confidentialité</h3>
+            <p class="feature-description">Aucune donnée n'est stockée sur nos serveurs. Tout est traité localement dans votre navigateur.</p>
           </div>
           <div class="feature-card">
-            <h3 class="feature-title">📃 Contrats & Reçus</h3>
-            <p class="feature-description">Contrats de prestation, attestations, reçus de paiement... tout est centralisé.</p>
+            <h3 class="feature-title">📱 Accessible partout</h3>
+            <p class="feature-description">Utilisez Doczy sur n'importe quel appareil, sans installation ni inscription.</p>
           </div>
+
         </div>
       </div>
     </section>
@@ -51,7 +52,10 @@
 </template>
 
 <script setup>
-// Aucun script nécessaire ici
+useHead({
+  title: 'Accueil - Doczy',
+  meta: [{ name: 'description', content: 'Bienvenue sur le site officiel de Doczy.' }],
+});
 </script>
 
 <style scoped>

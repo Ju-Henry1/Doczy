@@ -49,7 +49,10 @@
 </template>
 
 <script setup>
-// Pas de script nécessaire
+  useHead({
+    title: 'Mentions Légales - Doczy',
+    meta: [{ name: 'description', content: 'Informations légales de Doczy.' }],
+  });
 </script>
 
 <style scoped>
