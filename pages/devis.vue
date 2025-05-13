@@ -219,6 +219,7 @@ const total = computed(() =>
 
 const generatePDF = async (action) => {
   if (!pdfContent.value) return
+
   const jsPDF = (await import('jspdf')).default
   const html2canvas = (await import('html2canvas')).default
 
@@ -230,34 +231,44 @@ const generatePDF = async (action) => {
 
   pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, imgHeight)
 
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+
+  const fileName = `devis-${devis.value.number || 'doczy'}.pdf`
 
   if (action === 'preview') {
-    const blob = pdf.output('blob');
-    const url = URL.createObjectURL(blob);
+    const blob = pdf.output('blob')
+    const url = URL.createObjectURL(blob)
 
-    if (isIOS) {
-      // Télécharger même sur iOS
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `devis-${devis.value.number || 'doczy'}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    if (isMobileDevice) {
+      // Mobile : forcer le téléchargement
+      const link = document.createElement('a')
+      link.href = url
+      link.download = fileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
     } else {
-      // Desktop : ouvrir un nouvel onglet
-      window.open(url, '_blank');
+      // Desktop : ouverture dans un nouvel onglet
+      const pdfWindow = window.open(url, '_blank')
+      if (!pdfWindow) {
+        // Si bloqué par le navigateur
+        alert('Impossible d’ouvrir l’aperçu dans un nouvel onglet. Le téléchargement va commencer.')
+        const link = document.createElement('a')
+        link.href = url
+        link.download = fileName
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
     }
 
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(url)
+  } else {
+    // Télécharger (même code pour mobile & desktop)
+    pdf.save(fileName)
   }
-  else {
-    // Télécharger le PDF
-    pdf.save(`devis-${devis.value.number || 'doczy'}.pdf`)
-  }
-
-
 }
+
 </script>
 
 <style scoped>
