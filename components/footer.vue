@@ -1,13 +1,15 @@
 <template>
   <footer class="footer">
     <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
+      <div class="footer-grid">
+        <!-- Logo + Description -->
+        <div class="footer-brand">
           <h2 class="footer-title">Doczy</h2>
-          <p>Générez vos documents pro en quelques clics.</p>
+          <p class="footer-description">Générez vos documents professionnels en quelques clics.</p>
         </div>
 
-        <div class="footer-section">
+        <!-- Liens utiles -->
+        <div class="footer-links-section">
           <h3 class="footer-subtitle">Liens utiles</h3>
           <ul class="footer-links">
             <li><NuxtLink to="/outils" class="footer-link">Outils</NuxtLink></li>
@@ -17,10 +19,11 @@
             <li><NuxtLink to="/politique-confidentialite" class="footer-link">Politique de confidentialité</NuxtLink></li>
           </ul>
         </div>
+      </div>
 
-        <div class="footer-section">
-          <p>&copy; {{ new Date().getFullYear() }} Doczy. Tous droits réservés.</p>
-        </div>
+      <!-- Bas de page -->
+      <div class="footer-bottom">
+        <p>&copy; {{ new Date().getFullYear() }} Doczy. Tous droits réservés.</p>
       </div>
     </div>
   </footer>
@@ -31,61 +34,63 @@
 </script>
 
 <style scoped>
-/* Importation de la font Roboto depuis Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
-/* Général */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Footer */
 .footer {
   font-family: 'Roboto', sans-serif;
-  background-color: #f3f4f6;
-  padding: 40px 24px;
-  color: #4b5563;
+  background-color: #f9fafb;
+  padding: 48px 24px 32px;
+  color: #374151;
+  border-top: 1px solid #e5e7eb;
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 16px;
 }
 
-.footer-content {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
 }
 
-.footer-section {
-  width: 100%;
+.footer-brand {
+  max-width: 400px;
 }
 
 .footer-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.footer-description {
+  font-size: 1rem;
+  color: #6b7280;
 }
 
 .footer-subtitle {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 10px;
+  color: #111827;
+  margin-bottom: 12px;
 }
 
 .footer-links {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .footer-link {
+  display: block;
+  margin-bottom: 8px;
+  color: #1d4ed8;
   text-decoration: none;
-  color: #1e40af;
   transition: color 0.2s ease-in-out;
 }
 
@@ -93,15 +98,22 @@
   color: #2563eb;
 }
 
-/* Responsivité */
+.footer-bottom {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+}
+
+/* Responsive */
 @media (min-width: 768px) {
-  .footer-content {
-    flex-direction: row;
-    justify-content: space-between;
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .footer-section {
-    flex: 1;
+  .footer-bottom {
+    text-align: right;
   }
 }
 </style>

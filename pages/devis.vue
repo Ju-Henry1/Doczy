@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
-    <!-- PDF uniquement sur desktop -->
-    <div ref="pdfContent" class="pdf-content" v-if="!isMobile">
+  <div class="container" v-if="!isMobile">
+    <!-- Apercu PDF visible que sur Ordinateur -->
+    <div ref="pdfContent" class="pdf-content">
       <!-- En-tête -->
       <div class="header">
         <div class="block">
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <!-- Formulaire -->
+    <!-- Formulaire visible que sur ordinateur -->
     <form class="form">
       <!-- Émetteur -->
       <section class="section">
@@ -154,7 +154,7 @@
         </div>
       </section>
 
-      <!-- Mentions légales -->
+      <!-- Boutons visibles sur Ordinateur -->
       <section class="section">
         <h2>📝 Mentions légales</h2>
         <label>Texte affiché en bas du devis</label>
@@ -171,10 +171,28 @@
       </div>
     </form>
   </div>
+
+    <!-- Message visible uniquement sur mobile -->
+  <div v-if="isMobile" class="mobile-warning">
+    <h2>📵 Générateur de devis indisponible sur mobile</h2>
+    <p>Pour utiliser cet outil, veuillez vous connecter depuis un ordinateur.</p>
+  </div>
+
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+
+
+import { onMounted } from 'vue'
+
+const isMobile = ref(false)
+
+onMounted(() => {
+  isMobile.value = window.innerWidth <= 768
+})
+
+
+import { ref, computed } from 'vue'
 
 useHead({
   title: 'Devis - Doczy',
@@ -182,11 +200,6 @@ useHead({
 });
 
 const pdfContent = ref(null)
-const isMobile = ref(false)
-
-onMounted(() => {
-  isMobile.value = window.innerWidth <= 768
-})
 
 const devis = ref({
   vendorName: 'Entreprise Générale',
@@ -194,36 +207,58 @@ const devis = ref({
   vendorSiret: 'SIRET : 123 456 789 00012',
   vendorEmail: 'contact@entreprise.fr',
   vendorPhone: '01 23 45 67 89',
+
   clientName: 'Monsieur Jean Client',
   clientAddress: '42 avenue des Clients\n75001 Paris',
   clientEmail: 'jean.client@example.com',
   clientPhone: '06 12 34 56 78',
+
   number: 'DEV-2025-001',
   date: new Date().toISOString().substring(0, 10),
+
   items: [
     { description: 'Consultation', qty: 2, price: 100 },
     { description: 'Installation', qty: 1, price: 250 }
   ],
+
+  paymentMethod: 'Espèces',
+  bankDetails: 'IBAN : FR76 1234 5678 9012 3456 7890 123',
+
   footer: 'Validité du devis : 30 jours. Merci de dater et signer pour acceptation.'
 })
 
-const addItem = () => devis.value.items.push({ description: '', qty: 1, price: 0 })
-const removeItem = index => {
-  devis.value.items.splice(index, 1)
+const addItem = () => {
+  devis.value.items.push({ description: '', qty: 1, price: 0 })
 }
-const formatNumber = val => Number(val).toFixed(2)
+
+const formatNumber = (val) => Number(val).toFixed(2)
 
 const total = computed(() =>
   formatNumber(devis.value.items.reduce((acc, item) => acc + item.qty * item.price, 0))
 )
 
+const getBankField = (field) => {
+  const lines = devis.value.bankDetails.split('\n')
+  const map = { iban: ''}
+
+  lines.forEach(line => {
+    const lower = line.toLowerCase()
+    if (lower.includes('iban')) map.iban = line.split(':').slice(1).join(':').trim()
+  })
+
+  return map[field] || ''
+}
+
 const generatePDF = async (action) => {
   if (!pdfContent.value) return
-
   const jsPDF = (await import('jspdf')).default
   const html2canvas = (await import('html2canvas')).default
 
-  const canvas = await html2canvas(pdfContent.value, { scale: 2, useCORS: true })
+  const canvas = await html2canvas(pdfContent.value, {
+    scale: 2,
+    useCORS: true
+  })
+
   const imgData = canvas.toDataURL('image/png')
   const pdf = new jsPDF('p', 'mm', 'a4')
   const pageWidth = 210
@@ -231,46 +266,15 @@ const generatePDF = async (action) => {
 
   pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, imgHeight)
 
-  const isMobileDevice = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
-
-  const fileName = `devis-${devis.value.number || 'doczy'}.pdf`
-
   if (action === 'preview') {
     const blob = pdf.output('blob')
     const url = URL.createObjectURL(blob)
-
-    if (isMobileDevice) {
-      // Mobile : forcer le téléchargement
-      const link = document.createElement('a')
-      link.href = url
-      link.download = fileName
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-    } else {
-      // Desktop : ouverture dans un nouvel onglet
-      const pdfWindow = window.open(url, '_blank')
-      if (!pdfWindow) {
-        // Si bloqué par le navigateur
-        alert('Impossible d’ouvrir l’aperçu dans un nouvel onglet. Le téléchargement va commencer.')
-        const link = document.createElement('a')
-        link.href = url
-        link.download = fileName
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
-    }
-
-    URL.revokeObjectURL(url)
+    window.open(url, '_blank')
   } else {
-    // Télécharger (même code pour mobile & desktop)
-    pdf.save(fileName)
+    pdf.save(`facture-${devis.value.number || 'doczy'}.pdf`)
   }
 }
-
 </script>
-
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
@@ -505,6 +509,26 @@ label {
   transform: scale(0.98);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* Avertissement affichage mobile */
+
+.mobile-warning {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 12px;
+  color: #856404;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+.mobile-warning h2 {
+  font-size: 24px;
+  margin-bottom: 1rem;
+}
+
 
 
 
