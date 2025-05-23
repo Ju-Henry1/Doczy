@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="!isMobile">
     <!-- Aperçu PDF -->
     <div ref="pdfContent" class="pdf-content">
       <!-- En-tête -->
@@ -210,9 +210,25 @@
       </div>
     </form>
   </div>
+
+    <!-- Message visible uniquement sur mobile -->
+  <div v-if="isMobile" class="mobile-warning">
+    <h2>📵 Générateur de devis indisponible sur mobile</h2>
+    <p>Pour utiliser cet outil, veuillez vous connecter depuis un ordinateur.</p>
+  </div>
 </template>
 
 <script setup>
+
+import { onMounted } from 'vue'
+
+const isMobile = ref(false)
+
+onMounted(() => {
+  isMobile.value = window.innerWidth <= 768
+})
+
+
 import { ref, computed } from 'vue'
 
 useHead({
@@ -531,6 +547,25 @@ label {
 .btn-delete:active {
   transform: scale(0.98);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Avertissement affichage mobile */
+
+.mobile-warning {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  border-radius: 12px;
+  color: #856404;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+.mobile-warning h2 {
+  font-size: 24px;
+  margin-bottom: 1rem;
 }
 
 
