@@ -1,119 +1,83 @@
 <template>
   <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <!-- Logo + Description -->
-        <div class="footer-brand">
-          <h2 class="footer-title">Doczy</h2>
-          <p class="footer-description">Générez vos documents professionnels en quelques clics.</p>
-        </div>
-
-        <!-- Liens utiles -->
-        <div class="footer-links-section">
-          <h3 class="footer-subtitle">Liens utiles</h3>
-          <ul class="footer-links">
-            <li><NuxtLink to="/outils" class="footer-link">Outils</NuxtLink></li>
-            <li><NuxtLink to="/docs" class="footer-link">Documentation</NuxtLink></li>
-            <li><NuxtLink to="/contact" class="footer-link">Contact</NuxtLink></li>
-            <li><NuxtLink to="/mentions-legales" class="footer-link">Mentions légales</NuxtLink></li>
-            <li><NuxtLink to="/politique-confidentialite" class="footer-link">Politique de confidentialité</NuxtLink></li>
-          </ul>
-        </div>
+    <div class="footer-row">
+      <div class="footer-left">
+        <div class="logo">Doczy</div>
+        <nav class="nav">
+          <NuxtLink to="/">Accueil</NuxtLink>
+          <NuxtLink to="/documentation">Documentation</NuxtLink>
+          <NuxtLink to="/contact">Contact</NuxtLink>
+        </nav>
       </div>
-
-      <!-- Bas de page -->
-      <div class="footer-bottom">
-        <p>&copy; {{ new Date().getFullYear() }} Doczy. Tous droits réservés.</p>
+      <div class="footer-right">
+        <NuxtLink to="/mentions-legales">Mentions légales</NuxtLink>
+        <NuxtLink to="/confidentialite">Confidentialité</NuxtLink>
       </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 Doczy – Tous droits réservés.
     </div>
   </footer>
 </template>
 
-<script setup>
-// Pas de logique nécessaire ici
-</script>
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kablammo&display=swap');
 
 .footer {
-  font-family: 'Roboto', sans-serif;
-  background-color: #f9fafb;
-  padding: 48px 24px 32px;
-  color: #374151;
-  border-top: 1px solid #e5e7eb;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9f9fc;
+  border-top: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: #333;
+  padding: 30px 40px 20px;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 16px;
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
-  margin-bottom: 32px;
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 
-.footer-brand {
-  max-width: 400px;
-}
-
-.footer-title {
-  font-size: 1.5rem;
+.logo {
+  font-family: 'Kablammo', sans-serif;
   font-weight: 700;
-  color: #111827;
-  margin-bottom: 8px;
+  font-size: 18px;
+  color: #4a46e4;
 }
 
-.footer-description {
-  font-size: 1rem;
-  color: #6b7280;
+.nav {
+  display: flex;
+  gap: 24px;
 }
 
-.footer-subtitle {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 12px;
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-link {
-  display: block;
-  margin-bottom: 8px;
-  color: #1d4ed8;
+.nav a,
+.footer-right a {
+  color: #444;
   text-decoration: none;
-  transition: color 0.2s ease-in-out;
+  transition: color 0.2s;
 }
 
-.footer-link:hover {
-  color: #2563eb;
+.nav a:hover,
+.footer-right a:hover {
+  color: #4a46e4;
+}
+
+.footer-right {
+  display: flex;
+  gap: 20px;
 }
 
 .footer-bottom {
   text-align: center;
-  font-size: 0.875rem;
-  color: #9ca3af;
-  border-top: 1px solid #e5e7eb;
-  padding-top: 16px;
-}
-
-/* Responsive */
-@media (min-width: 768px) {
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .footer-bottom {
-    text-align: right;
-  }
+  color: #777;
+  font-size: 13px;
+  margin-top: 20px;
 }
 </style>
